@@ -18,16 +18,15 @@ function hasAccess(access) {
     };
 }
   
-  function isNotLoggedIn(req, res, next) {
-    if (!req.session.key) return next();
-    else res.redirect('/login');
-  }
+function isNotLoggedIn(req, res, next) {
+  if (!req.session.key) return next();
+  else return res.redirect('/login');
+}
 
 pong = async(req,res) => {
     return res.sendSuccess('pong');
 }; 
 
 router.get('/ping', pong);
-
 
 module.exports = router;

@@ -7,21 +7,8 @@ const saltRounds = 10;
 
 
 let exp = {}
-
-exp.signup = async (req,res) => {
-    let err, result;
-    let username = req.body.username;
-    let email = req.body.email;
-    let password;
-    [err , password] = await to(bcrypt.hash(req.body.password , saltRounds));
-    let userID = sha(email);
-    [err , result] = await to(db.query("insert into users values(?,?,?,?,?,?,?,?)" , [userID, username , email , password , 0 , 0 , null, null]));
-    if(err)
-      return res.sendError(err);
-    return res.sendSuccess("user signed up");
-};
   
-exp.login = async (req,res) =>{
+exp.login = async (req,res) => {
     let email = req.body.email;
     let password = req.body.password;
     console.log(req.body);
@@ -45,3 +32,4 @@ exp.logout = async (req,res) => {
       });
     return res.sendSuccess(null, 'logged out'); 
 };
+
