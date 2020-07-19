@@ -6,11 +6,11 @@ const { any } = require("joi");
 let exp = {}
 
 
-exp.pushOrder =  async(req,res) => { 
+exp.pushOrder = async(req,res) => { 
     //Implement
 };
 
-exp.allOrders =  async(req,res) => { 
+exp.allOrders = async(req,res) => { 
     //Implement
 };
 

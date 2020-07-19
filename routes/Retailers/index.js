@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const db = require("../../config/db");
 const to = require('../../utils/to');
+const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 let exp = {}
@@ -12,21 +13,17 @@ exp.signup = async (req,res) => {
     let location = req.body.location;
     let password = req.body.password;
     [err , password] = await to(bcrypt.hash(req.body.password , saltRounds));
-    let userID = sha(email);
-    [err , result] = await to(db.query("insert into Retailers values(?,?,?,?)" , [email , number , location , password]));
-    //handle dupicate mails
+    [err , result] = await to(db.query("insert into Retailers(email, number , location, password) values(?,?,?,?)" , [email , number , location , password]));
     if(err)
       return res.sendError(err); 
     return res.sendSuccess("Retailer signed up");
 };
   
 exp.login = async (req,res) =>{
-    //TODO - OTP verification
     let email = req.body.email;
     let password = req.body.password;
     let err , result , userData;
-    [err, userData] = await to(db.query("select * from users where email = ?" ,[email] ));
-    console.log(userData);
+    [err, userData] = await to(db.query("select * from Retailers where email = ?" ,[email] ));
     if(userData == null) return res.sendError("Email ID not found");
     if(err) return res.sendError("Email ID not found");
     [err , result] = await to (bcrypt.compare(password, userData[0].password));

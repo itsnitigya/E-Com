@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const db = require("../config/db");
 const to = require("../utils/to");
-const sha = require("sha1");
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -13,7 +12,7 @@ exp.login = async (req,res) => {
     let password = req.body.password;
     console.log(req.body);
     let err , result , userData;
-    [err, userData] = await to(db.query("select * from users where email = ?" ,[email]));
+    [err, userData] = await to(db.query("select * from Admin where email = ?" ,[email]));
     console.log(userData);
     if(userData == null) return res.sendError("email ID not found");
     if(err) return res.sendError("email ID not found");
