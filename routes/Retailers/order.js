@@ -9,11 +9,11 @@ exp.order = async (req,res) => {
     let err,result;
     let prods = req.body.order;
     let timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    let cart_id =  sha256(timestamp + req.session.key.r_id);
+    let item_id =  sha256(timestamp + req.session.key.r_id);
     for(var i = 0; i < prods.length ; i++){
         [err,result] = await to(db.query(
-            "insert into Cart where values(?,?,?,?,?,?,?,?,?,?,?,?)", [cart_id , i , req.session.key.r_id , NULL, req.session.key.location,
-                NULL , 0 , 0 , 0  , 0 , NULL ,timestamp
+            "insert into Cart where values(?,?,?,?,?,?,?,?,?,?,?,?,?)", [cart_id , i , req.session.key.r_id , NULL, req.session.key.location,
+                NULL , 0 , 0 , 0  , 0 , NULL , timestamp , timestamp
             ]
         ));
         if(err) return res.sendError(err);
@@ -24,6 +24,14 @@ exp.order = async (req,res) => {
         //update
     }
     return res.sendSuccess(null , "Order placed");
+};
+
+exp.recieveOrder = async(req,res) => { 
+    let err,result;
+    let cart_id = req.body.cart_id;
+    [err,result] = await to(db.query("update Cart set and isRecieved = 1 where cart_id =?", [cart_id]));
+    if(err) return res.sendError(err);
+    return res.sendSuccess("Order recieved");
 };
 
 exp.status = async (req,res) => {

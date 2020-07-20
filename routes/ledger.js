@@ -16,14 +16,14 @@ exp.updateLedger = async(req , res) => {
     let cart_id = req.body.cart_id;
     let query = req.params.operation;
     if(query == 'delete'){
-        [err,result] = await to(db.query("delete from Cart where cart_id = ?", [cart_id]));
+        [err,result] = await to(db.query("delete from Ledger where cart_id = ?", [cart_id]));
         if(err){
             res.sendError(err);
         }
     }
     if(query == 'update'){
         let total = req.body.total;
-        [err,result] = await to(db.query("update Cart set total = ? where cart_id = ?", [total , cart_id]));
+        [err,result] = await to(db.query("update Ledger set total = ? where cart_id = ?", [total , cart_id]));
         if(err){
             res.sendError(err);
         }

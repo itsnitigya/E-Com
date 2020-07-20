@@ -40,20 +40,20 @@ CREATE TABLE `Distributors` (
 	PRIMARY KEY (`d_id`)
 );
 
-DROP TABLE IF EXISTS `Orders`;
-CREATE TABLE `Orders` (
-	`order_id` INT(11) NOT NULL,
+DROP TABLE IF EXISTS `Item`;
+CREATE TABLE `Item` (
+	`item_id` INT(11) NOT NULL,
 	`prod_id` INT(11) NOT NULL,
 	`quantity` INT NOT NULL,
 	`price` varchar(255) NOT NULL,
-	PRIMARY KEY (`order_id`),
+	PRIMARY KEY (`item_id`),
 	FOREIGN KEY (prod_id) references Inventory(prod_id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS `Cart`;
 CREATE TABLE `Cart` (
 	`cart_id` INT(11) NOT NULL AUTO_INCREMENT,
-	`order_id` INT(11),
+	`item_id` INT(11),
 	`r_id` INT(11) NOT NULL,
 	`d_id` INT(11) NULL,
 	`total_price` varchar(255) NOT NULL,
