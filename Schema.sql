@@ -13,15 +13,24 @@ CREATE TABLE `Admin` (
 DROP TABLE IF EXISTS `Inventory`;
 CREATE TABLE `Inventory` (
 	`prod_id` varchar(255) NOT NULL,
-	`price` FLOAT NOT NULL,
 	`name` varchar(255) NOT NULL,
 	`information` varchar(255) NOT NULL,
-	`min_quantity` INT NOT NULL,
+	`min_quantity` INT(11) NOT NULL,
 	PRIMARY KEY (`prod_id`)
 );
 
-DROP TABLE IF EXISTS `Retailers`;
-CREATE TABLE `Retailers` (
+DROP TABLE IF EXISTS `Weight`;
+CREATE TABLE `Weight` (
+	`prod_id`  varchar(255) NOT NULL,
+	`weight_id` INT(11) NOT NULL,
+	`weight` INT(11) NOT NULL,
+	`price` INT(11) NOT NULL,
+	PRIMARY KEY (`prod_id` , `weight_id`),
+	FOREIGN KEY (prod_id) references Inventory(prod_id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS `Retailer`;
+CREATE TABLE `Retailer` (
 	`r_id` INT(11) NOT NULL AUTO_INCREMENT,
 	`email` varchar(255) UNIQUE,
 	`number` varchar(255),
@@ -30,8 +39,8 @@ CREATE TABLE `Retailers` (
 	PRIMARY KEY (`r_id`)
 );
 
-DROP TABLE IF EXISTS `Distributors`;
-CREATE TABLE `Distributors` (
+DROP TABLE IF EXISTS `Distributor`;
+CREATE TABLE `Distributor` (
 	`d_id` INT(11) NOT NULL AUTO_INCREMENT,
 	`email` varchar(255) UNIQUE,
 	`number` varchar(255),
@@ -40,48 +49,49 @@ CREATE TABLE `Distributors` (
 	PRIMARY KEY (`d_id`)
 );
 
-DROP TABLE IF EXISTS `Item`;
-CREATE TABLE `Item` (
-	`item_id` INT(11) NOT NULL,
-	`prod_id` INT(11) NOT NULL,
-	`quantity` INT NOT NULL,
-	`price` varchar(255) NOT NULL,
-	PRIMARY KEY (`item_id`),
-	FOREIGN KEY (prod_id) references Inventory(prod_id) ON DELETE CASCADE
-);
-
 DROP TABLE IF EXISTS `Cart`;
 CREATE TABLE `Cart` (
-	`cart_id` INT(11) NOT NULL AUTO_INCREMENT,
-	`item_id` INT(11),
+	`cart_id` varchar(255) NOT NULL,
 	`r_id` INT(11) NOT NULL,
 	`d_id` INT(11) NULL,
-	`total_price` varchar(255) NOT NULL,
+	`total` INT(11) NOT NULL,
 	`retailer_location` varchar(255) NOT NULL,
 	`distributor_location` varchar(255) NULL,
-	`isProcessed` BINARY NOT NULL,
-	`isRejected` BINARY NOT NULL,
-	`isDelivered` BINARY NOT NULL,
-	`isRecieved` BINARY NOT NULL,
-	`isCancelled` BINARY NOT NULL, 
+	`isProcessed` BOOLEAN NOT NULL,
+	`isRejected` BOOLEAN NOT NULL,
+	`isDelivered` BOOLEAN NOT NULL,
+	`isRecieved` BOOLEAN NOT NULL,
+	`isCancelled` BOOLEAN NOT NULL, 
 	`reason` varchar(255) NULL,
 	`created_at` TIMESTAMP NOT NULL,
 	`updated_at` TIMESTAMP NOT NULL,
-	PRIMARY KEY (`cart_id`, `order_id`),
-	FOREIGN KEY (order_id) references Orders(order_id) ON DELETE CASCADE,
-	FOREIGN KEY (r_id) references Retailers(r_id) ON DELETE CASCADE,
-	FOREIGN KEY (d_id) references Distributors(d_id) ON DELETE CASCADE
+	PRIMARY KEY (`cart_id`),
+	FOREIGN KEY (r_id) references Retailer(r_id) ON DELETE CASCADE,
+	FOREIGN KEY (d_id) references Distributor(d_id) ON DELETE CASCADE
 );
+
+DROP TABLE IF EXISTS `Item`;
+CREATE TABLE `Item` (
+	`item_id` INT(11) NOT NULL,
+	`cart_id` varchar(255) NOT NULL,
+	`prod_id`  varchar(255) NOT NULL,
+	`weight_id` INT(11) NOT NULL,
+	`quantity` INT(11) NOT NULL,
+	`price` INT(11) NOT NULL,
+	PRIMARY KEY (`item_id`, `cart_id`, `prod_id`,`weight_id`),
+	FOREIGN KEY (cart_id) references Cart(cart_id) ON DELETE CASCADE,
+	FOREIGN KEY (prod_id) references Inventory(prod_id) ON DELETE CASCADE
+);
+
 
 DROP TABLE IF EXISTS `Ledger`;
 CREATE TABLE `ledger` (
-	`cart_id` INT(11) NOT NULL,
+	`cart_id` varchar(255) NOT NULL,
 	`r_id` INT(11) NOT NULL,
 	`d_id` INT(11) NOT NULL,
-	`total` FLOAT NOT NULL,
+	`total` INT(11) NOT NULL,
 	`created_at` TIMESTAMP NOT NULL,
-	PRIMARY KEY (`cart_id` , `timestamp`),
-	FOREIGN KEY (order_id) references Orders(order_id) ON DELETE CASCADE,
-	FOREIGN KEY (r_id) references Retailers(r_id) ON DELETE CASCADE,
+	PRIMARY KEY (`cart_id` , `created_at`),
+	FOREIGN KEY (r_id) references Retailer(r_id) ON DELETE CASCADE,
 	FOREIGN KEY (cart_id) references Cart(cart_id) ON DELETE CASCADE
 );

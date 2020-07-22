@@ -29,16 +29,11 @@ exp.updateLedger = async(req , res) => {
         }
     }
     return res.sendSuccess(null , "Ledger updated");
- }
+}
+
+async function insertLedger(){
+
+}
 
 module.exports = exp;
 
-
-
-// DROP TABLE IF EXISTS `Ledger`;
-// CREATE TABLE `ledger` (
-// 	`cart_id` INT(11) NOT NULL,
-// 	`total` FLOAT NOT NULL,
-// 	`timestamp` TIMESTAMP NOT NULL,
-// 	FOREIGN KEY (cart_id) references Car(order_id) ON DELETE CASCADE,
-// );

@@ -13,17 +13,17 @@ exp.signup = async (req,res) => {
     let location = req.body.location;
     let password = req.body.password;
     [err , password] = await to(bcrypt.hash(req.body.password , saltRounds));
-    [err , result] = await to(db.query("insert into Retailers(email, number , location, password) values(?,?,?,?)" , [email , number , location , password]));
+    [err , result] = await to(db.query("insert into Retailer(email, number , location, password) values(?,?,?,?)" , [email , number , location , password]));
     if(err)
       return res.sendError(err); 
-    return res.sendSuccess("Retailer signed up");
+    return res.sendSuccess(null , "Retailer signed up");
 };
   
 exp.login = async (req,res) =>{
     let email = req.body.email;
     let password = req.body.password;
     let err , result , userData;
-    [err, userData] = await to(db.query("select * from Retailers where email = ?" ,[email] ));
+    [err, userData] = await to(db.query("select * from Retailer where email = ?" ,[email] ));
     if(userData == null) return res.sendError("Email ID not found");
     if(err) return res.sendError("Email ID not found");
     [err , result] = await to (bcrypt.compare(password, userData[0].password));
