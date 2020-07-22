@@ -2,4 +2,5 @@ Add schemas for validation
 Add fallbacks in case of error , make routes kind of atomic 
 Payment integration 
 2FA
+Find nearest locations 
 
