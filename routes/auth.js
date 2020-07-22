@@ -1,7 +1,6 @@
 const db = require("../config/db");
 const to = require("../utils/to");
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
 
 
 let exp = {}
@@ -20,7 +19,7 @@ exp.login = async (req,res) => {
     req.session.key = userData[0];
     req.session.key.type = 30;
     req.session.save(() => {
-      return res.send(userData);
+      return res.send(userData[0]);
     });
 };
   

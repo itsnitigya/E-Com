@@ -37,7 +37,7 @@ exp.placeOrder = async (req,res) => {
         }
     }
     [err,result] = await to(db.query(
-        "update Cart set total=? where cart_id = ?",
+        "update Cart set total = ? where cart_id = ?",
          [total, cart_id]
     ));
     if(err) return res.sendError(err);

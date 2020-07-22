@@ -2,7 +2,6 @@ const router = require("express").Router();
 const db = require("../../config/db");
 const to = require('../../utils/to');
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
 
 let exp = {}
 
@@ -12,7 +11,9 @@ exp.signup = async (req,res) => {
     let number =  req.body.number;
     let location = req.body.location;
     let password = req.body.password;
-    [err , password] = await to(bcrypt.hash(req.body.password , saltRounds));
+    [err, salt] = await to(bcrypt.genSalt(10));
+    if (err) return res.sendError(err);
+    [err , password] = await to(bcrypt.hash(req.body.password , salt));
     [err , result] = await to(db.query("insert into Distributor(email, number , location, password) values(?,?,?,?)" , [email , number , location , password]));
     if(err)
       return res.sendError(err);
