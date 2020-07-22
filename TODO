@@ -1,29 +1,5 @@
-Features - 
-•	Profile management-Custom login page with custom credentials
-•	Advertisement api
-•	Products management: Different categories: Eg: Atta,Besan
-•	SubProducts of each product like different type of atta.
-•	Inventory management.
-•	Survey section with answers of yes/no.
-•	2 portal for receiving orders and admin portal to edit the parameters.
-•	Payment Portal to pay online.
-
-Admin portal 
-•   Access to managing Inventory
-•   Access to managing Retailers
-•   Some Admin login (2FA) 
-•   Add surveys
-
-Retail portal
-•   Some Survey option (Yes/No questions)
-•   Buy/Sell Products
-•   Payment portal
-
-
-Design some Inventory System 
-
-Three Different Type of routes - 
-/admin/
-/retailer/
-/distributer/
+Add schemas for validation
+Add fallbacks in case of error , make routes kind of atomic 
+Payment integration 
+2FA
 
