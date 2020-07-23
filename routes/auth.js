@@ -1,6 +1,6 @@
 const db = require("../config/db");
 const to = require("../utils/to");
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 
 let exp = {}
