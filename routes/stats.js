@@ -5,14 +5,14 @@ let exp = {}
 
 exp.displayRetailers = async(req,res) => {
     let err, result;
-    [err,result] = await to(db.query("select * from Retailer"));
+    [err,result] = await to(db.query("select r_id, email, number, location  from Retailer"));
     if(err) return res.sendError(err);
     return res.sendSuccess(result);
 };
 
 exp.displayDistributors = async(req,res) => {
     let err, result; 
-    [err,result] = await to(db.query("select * from Distributor"));
+    [err,result] = await to(db.query("select d_id, email, number, location  from Distributor"));
     if(err) return res.sendError(err);
     return res.sendSuccess(result);
 }

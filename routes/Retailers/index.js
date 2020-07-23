@@ -24,7 +24,7 @@ exp.login = async (req,res) =>{
     let email = req.body.email;
     let password = req.body.password;
     let err , result , userData;
-    [err, userData] = await to(db.query("select * from Retailer where email = ?" ,[email] ));
+    [err, userData] = await to(db.query("select r_id, email, number, location from Retailer where email = ?" ,[email] ));
     if(userData == null) return res.sendError("Email ID not found");
     if(err) return res.sendError("Email ID not found");
     [err , result] = await to (bcrypt.compare(password, userData[0].password));
@@ -32,7 +32,7 @@ exp.login = async (req,res) =>{
     req.session.key = userData[0];
     req.session.key.type = 10;
     req.session.save(() => {
-      return res.sendSuccess(userData);
+      return res.sendSuccess(userData[0]);
     });
 };
   

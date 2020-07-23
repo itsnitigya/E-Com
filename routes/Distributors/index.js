@@ -24,15 +24,16 @@ exp.login = async (req,res) =>{
     let email = req.body.email;
     let password = req.body.password;
     let err , result , userData;
-    [err, userData] = await to(db.query("select * from Distributor where email = ?" ,[email]));
-    if(userData == null) return res.sendError("Email ID not found");
-    if(err) return res.sendError("Email ID not found");
+    [err, userData] = await to(db.query("select d_id, email, number, location from Distributor where email = ?" ,[email]));
+    if(userData == null) return res.sendError(null, "Email ID not found");
+    if(userData.length == 0) return res.sendError(null, "Email ID not found");
+    if(err) return res.sendError(null, "Email ID not found");
     [err , result] = await to (bcrypt.compare(password, userData[0].password));
     if(result == false) return res.sendError("incorrect email/password")
     req.session.key = userData[0];
     req.session.key.type = 20;
     req.session.save(() => {
-      return res.sendSuccess(userData);
+      return res.sendSuccess(userData[0]);
     });
 };
   

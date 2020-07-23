@@ -29,11 +29,13 @@ exp.addInventory = async(req,res) => {
 exp.deleteInventory =  async(req,res) => { 
     let err, result;
     let prod_id = req.body.prod_id;
-    [err, result] = await to(db.query('delete from Inventory where prod_id = ? ', [
-        prod_id
-    ]));
+    [err, result] = await to(db.query('delete from Inventory where prod_id = ? ', 
+        [prod_id]
+    ));
     if(err) return res.sendError(err);
-    [err , result] = await to(db.query('delete from Weight where prod_id = ?'))
+    [err , result] = await to(db.query('delete from Weight where prod_id = ?',
+        [prod_id]
+    ))
     if(err) return res.sendError(err);
     return res.sendSuccess(null , "Deleted from inventory");
 };
@@ -53,23 +55,3 @@ exp.getInventory =  async(req,res) => {
 
 
 module.exports = exp;
-
-
-// DROP TABLE IF EXISTS `Inventory`;
-// CREATE TABLE `Inventory` (
-// 	`prod_id` INT(11) NOT NULL AUTO_INCREMENT,
-// 	`name` varchar(255) NOT NULL,
-// 	`information` varchar(255) NOT NULL,
-// 	`min_quantity` INT(11) NOT NULL,
-// 	PRIMARY KEY (`prod_id`)
-// );
-
-// DROP TABLE IF EXISTS `Weight`;
-// CREATE TABLE `Weight` (
-// 	`prod_id`  INT(11) NOT NULL,
-// 	`weight_id` INT(11) NOT NULL,
-// 	`weight` INT(11) NOT NULL,
-// 	`price` INT(11) NOT NULL,
-// 	PRIMARY KEY (`prod_id` , `weight_id`),
-// 	FOREIGN KEY (prod_id) references Inventory(prod_id) ON DELETE CASCADE
-// );
