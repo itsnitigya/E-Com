@@ -1,1 +1,1 @@
-# ganeshgrains backend
+# Backend for a shopping system 
